@@ -103,6 +103,7 @@ if (navigator.getUserMedia) {
 
       audio.controls = true;
       var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+      uploadThisClip(blob,document.querySelector('.info-display').innerText);
       chunks = [];
       var audioURL = window.URL.createObjectURL(blob);
       audio.src = audioURL;
@@ -347,7 +348,15 @@ function saveRecordings() {
   mediaStreamSource.disconnect();
   allClips = document.querySelectorAll('.clip');
   clipIndex = 0;
-  uploadNextClip();
+  //uploadNextClip();
+}
+
+function uploadThisClip(blob,word) {
+  var ajaxRequest = new XMLHttpRequest();
+  var uploadUrl = '/upload?word=' + word + '&_csrf_token=' + csrf_token;
+  ajaxRequest.open('POST', uploadUrl, true);
+  ajaxRequest.setRequestHeader('Content-Type', 'application/json');
+  ajaxRequest.send(blob);
 }
 
 function uploadNextClip() {
