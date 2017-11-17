@@ -59,6 +59,15 @@ def upload():
     #blob.upload_from_string(audio_data, content_type='audio/ogg')
     return make_response('All good')
 
+@app.route('/post_email', methods=['POST'])
+def post_email():
+    email = request.args.get('email')
+    print 'here'
+    with open('email_list.txt', 'a') as f:
+        f.write(email + '\n')
+    return make_response('All good')
+
+
 # CSRF protection, see http://flask.pocoo.org/snippets/3/.
 @app.before_request
 def csrf_protect():
